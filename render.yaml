@@ -1,0 +1,13 @@
+# Deploy de teste no Render: conecte o repo e use este Blueprint.
+# https://render.com/docs/blueprint-spec
+services:
+  - type: web
+    name: coup-game
+    runtime: node
+    plan: free
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production

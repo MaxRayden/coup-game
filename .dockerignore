@@ -1,0 +1,10 @@
+node_modules
+client/dist
+shared/dist
+.git
+*.tsbuildinfo
+.env
+.env.*
+!.env.example
+.vite
+README.md

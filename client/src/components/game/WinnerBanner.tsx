@@ -1,11 +1,25 @@
-export default function WinnerBanner({ winner, endedByAdmin, isAdmin, onRestart }) {
+import type { Player } from "@shared/types/game";
+
+export interface WinnerBannerProps {
+  winner: Player | undefined;
+  endedByAdmin: boolean;
+  isAdmin: boolean;
+  onRestart: () => void;
+}
+
+export default function WinnerBanner({
+  winner,
+  endedByAdmin,
+  isAdmin,
+  onRestart,
+}: WinnerBannerProps) {
   const hasWinner = Boolean(winner);
 
   return (
     <div className="winner-overlay" role="dialog" aria-labelledby="winner-title">
       <div className="winner-card">
         <p className="winner-eyebrow">Fim de jogo</p>
-        {hasWinner ? (
+        {hasWinner && winner ? (
           <>
             <h2 id="winner-title" className="winner-name">
               {winner.name}

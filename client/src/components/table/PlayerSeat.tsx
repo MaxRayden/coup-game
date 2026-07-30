@@ -1,4 +1,23 @@
-export default function PlayerSeat({ player, style, isTurn, isMine, onOpen }) {
+import type { CSSProperties } from "react";
+import type { Card, Player } from "@shared/types/game";
+
+export interface PlayerSeatProps {
+  player: Player;
+  style: CSSProperties;
+  isTurn: boolean;
+  isMine: boolean;
+  isMarked: boolean;
+  onOpen?: () => void;
+}
+
+export default function PlayerSeat({
+  player,
+  style,
+  isTurn,
+  isMine,
+  isMarked,
+  onOpen,
+}: PlayerSeatProps) {
   const aliveCards = player.cards.filter((c) => !c.discarded);
   const discarded = player.cards.filter((c) => c.discarded);
   const interactive = Boolean(isMine && onOpen);
@@ -8,6 +27,7 @@ export default function PlayerSeat({ player, style, isTurn, isMine, onOpen }) {
     isTurn ? "seat-turn" : "",
     player.eliminated ? "seat-out" : "",
     isMine ? "seat-mine" : "seat-other",
+    isMarked ? "seat-marked" : "",
     interactive ? "" : "seat-locked",
   ]
     .filter(Boolean)
@@ -26,6 +46,7 @@ export default function PlayerSeat({ player, style, isTurn, isMine, onOpen }) {
           discarded={discarded}
           isTurn={isTurn}
           isMine={isMine}
+          isMarked={isMarked}
         />
       </div>
     );
@@ -45,12 +66,29 @@ export default function PlayerSeat({ player, style, isTurn, isMine, onOpen }) {
         discarded={discarded}
         isTurn={isTurn}
         isMine={isMine}
+        isMarked={isMarked}
       />
     </button>
   );
 }
 
-function SeatContent({ player, aliveCards, discarded, isTurn, isMine }) {
+interface SeatContentProps {
+  player: Player;
+  aliveCards: Card[];
+  discarded: Card[];
+  isTurn: boolean;
+  isMine: boolean;
+  isMarked: boolean;
+}
+
+function SeatContent({
+  player,
+  aliveCards,
+  discarded,
+  isTurn,
+  isMine,
+  isMarked,
+}: SeatContentProps) {
   return (
     <>
       <span className="seat-name">
@@ -71,6 +109,7 @@ function SeatContent({ player, aliveCards, discarded, isTurn, isMine }) {
         ))}
       </div>
 
+      {isMarked && <span className="seat-badge marked">Alvo</span>}
       {player.eliminated && <span className="seat-badge">Eliminado</span>}
       {isTurn && !player.eliminated && <span className="seat-turn-ring" />}
     </>
